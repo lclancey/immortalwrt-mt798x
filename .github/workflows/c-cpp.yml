@@ -13,11 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - name: create_config_file
+      run: |
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+        cp -f defconfig/mt7981-ax3000.config .config
+        make menuconfig
+        make -j$(nproc)
